@@ -1,0 +1,43 @@
+global:
+  domain: argo.stg.velmios.dev
+
+certificate:
+  enabled: true
+
+server:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: cloudflare-velmios-dev
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    tls: true
+
+dex:
+  enabled: true
+
+configs:
+  cm:
+    create: true
+    dex.server: http://argocd-dex-server.argocd.svc.cluster.local:5556/dex
+    dex.config: |
+      connectors:
+        - type: github
+          id: github
+          name: G/DeerHide
+          config:
+            clientID: Iv23likZuKI7HH4bkMoi
+            clientSecret: $github:clientSecret
+            orgs:
+            - name: DeerHide
+            loadAllGroups: true
+            teamNameField: slug
+  rbac:
+    policy.default: role:readonly
+    policy.csv: |
+      g, Laelidona:admin, role:admin
+      g, DeerHide:operators, role:admin
+    scopes: '[groups, email]'
+
