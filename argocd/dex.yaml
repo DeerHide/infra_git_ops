@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dex
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    # Manifest
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      path: argocd/dex
+      targetRevision: HEAD
+    # HelmChart
+    - repoURL: https://charts.dexidp.io
+      chart: dex
+      targetRevision: "0.*"
+      helm:
+        releaseName: dex
+        valueFiles:
+          - $values/argocd/dex/values.yaml
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: dex
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true

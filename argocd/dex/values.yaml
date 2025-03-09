@@ -1,0 +1,50 @@
+config:
+  issuer: https://auth.stg.velmios.dev
+  storage:
+    type: memory
+  connectors:
+  - type: github
+    id: github
+    name: G/DeerHide
+    config:
+      clientID: $DEX_GITHUB_CLIENT_ID
+      clientSecret: $DEX_GITHUB_CLIENT_SECRET
+      orgs:
+      - name: DeerHide
+        teams:
+          - operators
+      loadAllGroups: true
+      teamNameField: slug
+      redirectURI: https://auth.stg.velmios.dev/callback
+  staticClients:
+  - id: harbor-client
+    secretEnv: DEX_HARBOR_CLIENT_SECRET
+    name: Harbor
+    redirectURIs:
+    - https://harbor.stg.velmios.dev/c/oidc/callback
+
+envFrom:
+  - secretRef:
+      name: github
+  - secretRef:
+      name: harbor-client
+
+https:
+  enabled: false
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: cloudflare-velmios-dev
+
+  hosts:
+    - host: auth.stg.velmios.dev
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+  tls:
+    - secretName: auth-tls
+      hosts:
+        - auth.stg.velmios.dev
