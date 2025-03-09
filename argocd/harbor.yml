@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: harbor
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      path: argocd/harbor
+      targetRevision: HEAD
+    - repoURL: https://helm.goharbor.io
+      chart: harbor
+      targetRevision: 1.*
+      helm:
+        createNamespace: true
+        releaseName: harbor
+        valueFiles:
+          - $values/argocd/harbor/values.yaml
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: harbor
+  ignoreDifferences:
+    - group: networking
+      kind: Ingress
+      jsonPointers:
+        - /spec/ingressClassName
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true

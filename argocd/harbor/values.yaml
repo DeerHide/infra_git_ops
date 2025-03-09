@@ -1,0 +1,38 @@
+expose:
+  type: ingress
+  ingress:
+    hosts:
+      core: harbor.stg.velmios.dev
+    annotations:
+      cert-manager.io/cluster-issuer: cloudflare-velmios-dev
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    className: "nginx"
+  tls:
+    enabled: true
+    certSource: secret
+    secret:
+      secretName: harbor-tls
+
+persistence:
+  enabled: true
+  persistentVolumeClaim:
+    registry:
+      storageClass: openebs-single-replica
+      size: 10Gi
+    jobservice:
+      jobLog:
+        storageClass: openebs-single-replica
+    database:
+      storageClass: openebs-single-replica
+    redis:
+      storageClass: openebs-single-replica
+    trivy:
+      storageClass: openebs-single-replica
+    chartmuseum:
+      storageClass: openebs-single-replica
+
+externalURL: https://harbor.stg.velmios.dev
+
+trivy:
+  enabled: true
