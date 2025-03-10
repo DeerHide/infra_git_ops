@@ -11,7 +11,7 @@ spec:
       targetRevision: HEAD
     - repoURL: https://operator.min.io
       chart: tenant
-      targetRevision: 4.*
+      targetRevision: 7.*
       helm:
         releaseName: minio-tenant
         namespace: minio

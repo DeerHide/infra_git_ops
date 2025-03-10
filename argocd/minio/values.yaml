@@ -13,9 +13,6 @@ tenant:
       volumesPerServer: 2
       size: 20Gi
       storageClass: openebs-single-replica
-      nodeSelector:
-        matchLabels:
-          openebs.io/engine: mayastor
   features:
     domains: 
       - minio: minio-stg.velmios.dev
