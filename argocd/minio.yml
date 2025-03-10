@@ -10,7 +10,7 @@ spec:
       path: argocd/minio/manifest
       targetRevision: HEAD
     - repoURL: https://operator.min.io
-      chart: minio
+      chart: tenant
       targetRevision: 4.*
       helm:
         releaseName: minio-operator
@@ -25,5 +25,4 @@ spec:
     namespace: minio
   syncPolicy:
     automated:
-      prune: false
       selfHeal: true
