@@ -10,6 +10,14 @@ spec:
       path: argocd/minio/manifest
       targetRevision: HEAD
     - repoURL: https://operator.min.io
+      chart: tenant
+      targetRevision: 4.*
+      helm:
+        releaseName: minio-tenant
+        namespace: minio
+        valueFiles:
+          - $values/argocd/minio/values.yaml
+    - repoURL: https://operator.min.io
       chart: minio-operator
       targetRevision: 4.*
       helm:
