@@ -13,7 +13,6 @@ spec:
       chart: harbor
       targetRevision: 1.*
       helm:
-        createNamespace: true
         releaseName: harbor
         valueFiles:
           - $values/argocd/harbor/values.yaml

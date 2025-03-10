@@ -13,7 +13,6 @@ spec:
       chart: minio
       targetRevision: 4.*
       helm:
-        createNamespace: true
         releaseName: minio-operator
         namespace: minio
         valueFiles:
