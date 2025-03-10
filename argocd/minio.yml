@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio-operator
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      path: argocd/minio/manifest
+      targetRevision: HEAD
+    - repoURL: https://operator.min.io
+      chart: minio
+      targetRevision: 4.*
+      helm:
+        createNamespace: true
+        releaseName: minio-operator
+        namespace: minio
+        valueFiles:
+          - $values/argocd/minio/values.yaml
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: minio
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true

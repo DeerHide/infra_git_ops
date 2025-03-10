@@ -1,0 +1,46 @@
+
+tenant:
+  name: minio
+
+  configSecret:
+    name: minio-root-user
+    accessKey: user
+    secretKey: password
+
+  pools:
+    - server: 4
+      name: minio-pool
+      volumesPerServer: 2
+      size: 20Gi
+      storageClass: openebs-single-replica
+      nodeSelector:
+        matchLabels:
+          openebs.io/engine: mayastor
+  features:
+    domains: 
+      - minio: minio-stg.velmios.dev
+        console: console-minio-stg.velmios.dev
+  buckets: []
+  users: []
+
+  ingress:
+    api:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: cloudflare-velmios-dev
+      tls:
+        - hosts:
+            - minio-stg.velmios.dev
+          secretName: minio-tls
+      host: minio-stg.velmios.dev
+    console:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: cloudflare-velmios-dev
+      tls:
+        - hosts:
+            - console-minio-stg.velmios.dev
+          secretName: console-minio-tls
+      host: console-minio-stg.velmios.dev
