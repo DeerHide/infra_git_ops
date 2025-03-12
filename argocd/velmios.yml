@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: velmios
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: velmios
+  namespace: argocd
+  # Finalizer that ensures that project is not deleted until it is not referenced by any application
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  # The project name
+  description: Velmios project
+  # The source repository URL
+  sourceRepos:
+    - '*'
+
+  # Only permit applications to deploy to the guestbook namespace in the same cluster
+  # Destination clusters can be identified by 'server', 'name', or both.
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: velmios
+    - server: https://kubernetes.default.svc
+      namespace: velmios-internal
+
+  roles:
+  # A role which provides read-only access to all applications in the project
+  - name: admin
+    description: Admin role
+    groups:
+    - Laelidona:admin
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velmios
+  namespace: argocd
+spec:
+  project: velmios
+  sources:
+    # Manifest
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      path: argocd/velmios
+      targetRevision: HEAD
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: velmios
+  syncPolicy:
+    automated:
+      selfHeal: true
