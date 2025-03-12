@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velmios-internal-hydra
+  namespace: argocd
+spec:
+  project: velmios
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: velmios-internal
+  syncPolicy:
+    automated:
+      selfHeal: true
+  sources:
+    # Manifest
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      path: argocd/velmios/internal/hydra
+      targetRevision: HEAD
+    # Hydra
+    - repoURL: https://k8s.ory.sh/helm/charts
+      chart: hydra
+      targetRevision: 0.50.*
+      helm:
+        valueFiles:
+          - $values/argocd/velmios/internal/hydra/values.yaml
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      targetRevision: HEAD
+      ref: values

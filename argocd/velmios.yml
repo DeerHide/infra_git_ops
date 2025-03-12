@@ -17,10 +17,14 @@ spec:
   # The source repository URL
   sourceRepos:
     - '*'
-
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
   # Only permit applications to deploy to the guestbook namespace in the same cluster
   # Destination clusters can be identified by 'server', 'name', or both.
   destinations:
+    - server: https://kubernetes.default.svc
+      namespace: argocd
     - server: https://kubernetes.default.svc
       namespace: velmios
     - server: https://kubernetes.default.svc
@@ -48,6 +52,3 @@ spec:
   destination:
     server: "https://kubernetes.default.svc"
     namespace: velmios
-  syncPolicy:
-    automated:
-      selfHeal: true

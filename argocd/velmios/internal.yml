@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: velmios
+  name: velmios-internal
   namespace: argocd
 spec:
   project: velmios
@@ -13,6 +13,3 @@ spec:
   destination:
     server: "https://kubernetes.default.svc"
     namespace: velmios-internal
-  syncPolicy:
-    automated:
-      selfHeal: true
