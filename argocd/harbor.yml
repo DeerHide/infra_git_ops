@@ -27,6 +27,11 @@ spec:
       kind: Ingress
       jsonPointers:
         - /spec/ingressClassName
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/template/metadata/annotations/checksum/secret
+        - /spec/template/metadata/annotations/checksum/secret-core
   syncPolicy:
     automated:
       selfHeal: true
