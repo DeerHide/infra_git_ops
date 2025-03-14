@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velmios-customer-kratos-postgresql
+  namespace: argocd
+spec:
+  project: velmios
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: velmios-customer
+  syncPolicy:
+    automated:
+      selfHeal: true
+  sources:
+    # PostgreSQL
+    - repoURL: registry-1.docker.io/bitnamicharts
+      chart: postgresql
+      targetRevision: 16.*
+      helm:
+        releaseName: velmios-customer-kratos-postgresql
+        valuesObject:
+          global:
+            defaultStorageClass: openebs-single-replica
+            postgresql:
+              auth:
+                enablePostgresUser: true
+                database: kratos
+                username: kratos
+                existingSecret: velmios-customer-kratos-postgresql-secret
+                adminPasswordKey: postgres-password 
+                userPasswordKey: password
+          architecture: standalone
+          volumePermissions:
+            enabled: true
+          tls:
+            enabled: false

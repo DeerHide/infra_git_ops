@@ -1,0 +1,194 @@
+
+ingress:
+  admin:
+    enabled: false
+  public:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: mkcert-ca-issuer
+    hosts:
+      - host: kratos-customer-stg.velmios.dev
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+      - secretName: kratos-tls
+        hosts:
+          - kratos-customer-stg.velmios.dev
+
+deployment:
+  extraEnv:
+    - name: DSN
+      valueFrom:
+        secretKeyRef:
+          name: velmios-customer-kratos-postgresql-secret
+          key: dsn
+statefulSet:
+  extraEnv:
+    - name: DSN
+      valueFrom:
+        secretKeyRef:
+          name: velmios-customer-kratos-postgresql-secret
+          key: dsn
+job:
+  extraEnv:
+    - name: DSN
+      valueFrom:
+        secretKeyRef:
+          name: velmios-customer-kratos-postgresql-secret
+          key: dsn
+cronjob:
+  cleanup:
+    extraEnv:
+      - name: DSN
+        valueFrom:
+          secretKeyRef:
+            name: velmios-customer-kratos-postgresql-secret
+            key: dsn
+   
+kratos:
+  automigration:
+    enabled: true
+
+
+
+  config:
+
+    serve:
+      public:
+        base_url: https://kratos-customer-stg.velmios.dev
+        cors:
+          enabled: true
+          allowed_origins:
+            - "https://velmios.dev"
+            - "https://*.velmios.dev"
+            - "https://kratos-customer-stg.velmios.dev"
+          allowed_methods:
+            - POST
+            - GET
+            - PUT
+            - PATCH
+            - DELETE
+          allowed_headers:
+            - Authorization
+            - Cookie
+            - Content-Type
+          exposed_headers:
+            - Content-Type
+            - Set-Cookie
+          allow_credentials: true
+          debug: true
+
+    dsn: DSN
+    identity:
+      default_schema_id: identity.default.schema.json
+      schemas:
+        - id: identity.default.schema.json
+          url: file:///etc/config/identity.default.schema.json
+
+    courier:
+      smtp:
+        connection_uri: smtp://mailpit-release-smtp.mailpit.svc.cluster.local:25/?disable_starttls=true
+    selfservice:
+      default_browser_return_url: https://kratos-customer-stg.velmios.dev
+      allowed_return_urls:
+        - https://kratos-customer-stg.velmios.dev
+      methods:
+        # WebAuthn
+        # https://www.ory.sh/docs/kratos/self-hosted/mfa#webauthn
+        webauthn:
+          config:
+            passwordless: false
+            rp:
+              display_name: "Velmios"
+              # Set 'id" to the top-level domain of the public host'
+              id: velmios.dev
+              # Set 'origin' to the exact URL of the page that prompts the user to use WebAuthn. You must include the scheme, host, and port
+              origin: "https://customer-stg.velmios.dev"
+          enabled: true
+        # Time-based One-Time Password
+        # https://www.ory.sh/docs/kratos/self-hosted/mfa#time-based-one-time-passwords-totp
+        totp:
+          config:
+            # The issuer is the name of the service displayed in the user's authenticator app
+            issuer: "velmios.dev"
+          enabled: true
+        # Recovery Code
+        # https://www.ory.sh/docs/kratos/self-hosted/mfa#lookup-secrets-recovery-codes
+        lookup_secret:
+          enabled: true
+      flows:
+        settings:
+          required_aal: highest_available
+        registration:
+          enabled: true
+          login_hints: false
+          ui_url: https://customer-stg.velmios.dev/auth/signup
+        verification:
+          enabled: true
+          ui_url: https://customer-stg.velmios.dev/auth/verify
+        login:
+          ui_url: https://customer-stg.velmios.dev/auth
+          lifespan: 1h
+    session:
+      whoami:
+        required_aal: aal1
+      
+    hashers:
+        algorithm: argon2
+        argon2:
+          parallelism: 1
+          memory: 128MB
+          iterations: 3
+          salt_length: 16
+          key_length: 32
+  identitySchemas:
+    "identity.default.schema.json": |
+      {
+        "id": "identity.default.schema.json",
+        "name": "Default Identity Schema",
+        "description": "The default identity schema",
+        "properties": {
+          "traits": {
+            "type": "object",
+            "properties": {
+              "username": {
+                "type": "string",
+                "title": "Username",
+                "minLength": 3
+              },
+              "country": {
+                "type": "string",
+                "title": "Country",
+                "minLength": 2
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "title": "E-Mail",
+                "minLength": 3,
+                "ory.sh/kratos": {
+                  "credentials": {
+                    "password": {
+                      "identifier": true
+                    }
+                  },
+                  "verification": {
+                    "via": "email"
+                  },
+                  "recovery": {
+                    "via": "email"
+                  }
+                }
+              }
+            },
+            "required": [
+              "email",
+              "username",
+              "country"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
