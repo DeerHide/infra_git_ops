@@ -1,0 +1,22 @@
+global:
+  storageClass: "openebs-single-replica"
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: cloudflare-velmios-dev
+  hostname: mailpit-stg.velmios.dev
+  extraHosts:
+    - host: mailpit-stg.velmios.dev
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: true
+  extraTls:
+    - secretName: mailpit-tls
+      hosts:
+        - mailpit-stg.velmios.dev
+
+persistence:
+  enabled: true

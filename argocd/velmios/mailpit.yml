@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velmios-mailpit
+  namespace: argocd
+spec:
+  project: velmios
+  sources:
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      path: argocd/velmios/mailpit
+      targetRevision: HEAD
+    - chart: mailpit
+      repoURL: https://jouve.github.io/charts
+      targetRevision: 0.*
+      helm:
+        releaseName: mailpit-release
+        valueFiles:
+          - $values/argocd/velmios/mailpit/values.yaml
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: velmios-mailpit
+  syncPolicy:
+    automated:
+      selfHeal: true
+    
