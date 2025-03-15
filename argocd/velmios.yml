@@ -31,7 +31,8 @@ spec:
       namespace: velmios-internal
     - server: https://kubernetes.default.svc
       namespace: velmios-customer
-
+    - server: https://kubernetes.default.svc
+      namespace: velmios-mailpit
   roles:
   # A role which provides read-only access to all applications in the project
   - name: admin

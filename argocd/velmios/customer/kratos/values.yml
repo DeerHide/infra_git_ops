@@ -89,7 +89,7 @@ kratos:
 
     courier:
       smtp:
-        connection_uri: smtp://mailpit-release-smtp.mailpit.svc.cluster.local:25/?disable_starttls=true
+        connection_uri: smtp://mailpit-release-smtp.velmios-mailpit.svc.cluster.local:25/?disable_starttls=true
     selfservice:
       default_browser_return_url: https://kratos-customer-stg.velmios.dev
       allowed_return_urls:
