@@ -64,6 +64,9 @@ kratos:
             - "https://velmios.dev"
             - "https://*.velmios.dev"
             - "https://kratos-customer-stg.velmios.dev"
+            - "https://portal-stg.velmios.dev"
+            - "https://portal-dev.velmios.dev"
+            - "https://portal-dev.velmios.dev:5173"
           allowed_methods:
             - POST
             - GET
@@ -91,9 +94,11 @@ kratos:
       smtp:
         connection_uri: smtp://mailpit-release-smtp.velmios-mailpit.svc.cluster.local:25/?disable_starttls=true
     selfservice:
-      default_browser_return_url: https://kratos-customer-stg.velmios.dev
+      default_browser_return_url: https://portal-stg.velmios.dev
       allowed_return_urls:
-        - https://kratos-customer-stg.velmios.dev
+        - https://portal-stg.velmios.dev
+        - https://portal-dev.velmios.dev
+        - https://portal-dev.velmios.dev:5173
       methods:
         # WebAuthn
         # https://www.ory.sh/docs/kratos/self-hosted/mfa#webauthn
@@ -105,14 +110,14 @@ kratos:
               # Set 'id" to the top-level domain of the public host'
               id: velmios.dev
               # Set 'origin' to the exact URL of the page that prompts the user to use WebAuthn. You must include the scheme, host, and port
-              origin: "https://customer-stg.velmios.dev"
+              origin: "https://portal-stg.velmios.dev:443"
           enabled: true
         # Time-based One-Time Password
         # https://www.ory.sh/docs/kratos/self-hosted/mfa#time-based-one-time-passwords-totp
         totp:
           config:
             # The issuer is the name of the service displayed in the user's authenticator app
-            issuer: "velmios.dev"
+            issuer: "portal-stg.velmios.dev"
           enabled: true
         # Recovery Code
         # https://www.ory.sh/docs/kratos/self-hosted/mfa#lookup-secrets-recovery-codes
@@ -124,12 +129,12 @@ kratos:
         registration:
           enabled: true
           login_hints: false
-          ui_url: https://customer-stg.velmios.dev/auth/signup
+          ui_url: https://portal-stg.velmios.dev/auth/signup
         verification:
           enabled: true
-          ui_url: https://customer-stg.velmios.dev/auth/verify
+          ui_url: https://portal-stg.velmios.dev/auth/verify
         login:
-          ui_url: https://customer-stg.velmios.dev/auth
+          ui_url: https://portal-stg.velmios.dev/auth
           lifespan: 1h
     session:
       whoami:
