@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: telepresence
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    # Manifest
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      path: argocd/telepresence
+      targetRevision: HEAD
+    # HelmChart
+    - repoURL: ghcr.io/telepresenceio
+      chart: telepresence-oss
+      targetRevision: "2.*"
+      helm:
+        releaseName: telepresence
+        valueFiles:
+          - $values/argocd/telepresence/values.yaml
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: telepresence
+  syncPolicy:
+    automated:
+      selfHeal: true

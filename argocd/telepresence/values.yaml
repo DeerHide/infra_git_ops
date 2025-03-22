@@ -1,0 +1,7 @@
+agent:
+  initSecurityContext:
+    runAsNonRoot: false
+    capabilities:
+      add:
+        - NET_ADMIN
+    privileged: true
