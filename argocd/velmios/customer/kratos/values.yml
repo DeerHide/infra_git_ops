@@ -93,6 +93,10 @@ kratos:
     courier:
       smtp:
         connection_uri: smtp://mailpit-release-smtp.velmios-mailpit.svc.cluster.local:25/?disable_starttls=true
+
+    cookies:
+      domain: velmios.dev
+      same_site: Lax
     selfservice:
       default_browser_return_url: https://portal-stg.velmios.dev
       allowed_return_urls:
