@@ -26,5 +26,4 @@ spec:
     namespace: dex
   syncPolicy:
     automated:
-      prune: false
       selfHeal: true
