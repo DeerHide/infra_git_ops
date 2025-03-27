@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: headlamp
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    # Manifest
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      path: argocd/headlamp
+      targetRevision: HEAD
+    # HelmChart
+    - repoURL: https://headlamp-k8s.github.io/headlamp/
+      chart: headlamp
+      targetRevision: "0.*"
+      helm:
+        releaseName: headlamp
+        valueFiles:
+          - $values/argocd/headlamp/values.yml
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: headlamp
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true

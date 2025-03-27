@@ -49,5 +49,14 @@ data:
           teamName: velmios
           audTag:
             - e7675610a4d2e771e77bb9fb3911c9e5874d76cb2f60abcb861dd03c49a20b21
+    - hostname: headlamp-stg.velmios.dev
+      service: https://headlamp.headlamp.svc.cluster.local:80
+      originRequest:
+        noTLSVerify: true
+        access:
+          required: true
+          teamName: velmios
+          audTag:
+            - 278bd3a265fea027b69ed37d7057e91e8116364446e57a037e2196173ef1f461
     # This rule matches any traffic which didn't match a previous rule, and responds with HTTP 404.
     - service: http_status:404

@@ -1,0 +1,24 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: headlamp
+  namespace: kube-system
+  annotations:
+    cert-manager.io/cluster-issuer: cloudflare-velmios-dev
+spec:
+  ingressClassName: nginx
+  tls:
+  - secretName: headlamp
+    hosts:
+    - headlamp-stg.velmios.dev
+  rules:
+  - host: headlamp-stg.velmios.dev
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: headlamp
+            port:
+              number: 80
