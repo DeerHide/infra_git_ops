@@ -1,5 +1,5 @@
 global:
-  domain: argo.stg.velmios.dev
+  domain: argocd-stg.velmios.dev
 
 certificate:
   enabled: true
