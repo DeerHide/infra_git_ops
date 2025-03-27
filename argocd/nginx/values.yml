@@ -1,0 +1,6 @@
+controller:
+  extraArgs:
+    enable-ssl-passthrough: true
+service:
+  annotations:
+    metallb.universe.tf/address-pool: public

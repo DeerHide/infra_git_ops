@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-ingress-controller
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    # Manifest
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      path: argocd/nginx
+      targetRevision: HEAD
+    # HelmChart
+    - repoURL: registry-1.docker.io/bitnamicharts
+      chart: nginx-ingress-controller
+      targetRevision: "11.*"
+      helm:
+        valueFiles:
+          - $values/argocd/nginx/values.yml
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: nginx-system
+  syncPolicy:
+    automated:
+      selfHeal: true
