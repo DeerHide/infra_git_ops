@@ -28,9 +28,18 @@ data:
     # E.g. `cloudflared tunnel route dns example-tunnel tunnel.example.com`.
     ingress:
     - hostname: velmios-minio-stg.velmios.dev
-      service: https://minio.minio.svc.cluster.local:9443
+      service: https://minio.minio.svc.cluster.local:443
+      originRequest:
+        noTLSVerify: true
     - hostname: console-velmios-minio-stg.velmios.dev
       service: https://velmios-console.minio.svc.cluster.local:9443
+      originRequest:
+        noTLSVerify: true
+        access:
+          required: true
+          teamName: velmios
+          audTag:
+            - 347e18d69aeed946b08df952ce988d4169fcc260f67ec86b4d404fd01c9de702
     # The first rule proxies traffic to the httpbin sample Service defined in app.yaml
     # - hostname: tunnel.example.com
     #   service: http://web-service:80
