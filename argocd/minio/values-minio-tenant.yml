@@ -1,0 +1,41 @@
+tenant:
+  name: velmios
+  configuration:
+    name: velmios-env-configuration
+  pools:
+    - servers: 4
+      name: velmios-pool-0
+      volumesPerServer: 2
+      size: 10Gi
+      storageClassName: directpv-min-io
+  configSecret:
+    existingSecret: true
+    accessKey: null
+    secretKey: null
+ingress:
+  api:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: cloudflare-velmios-dev
+      nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+      nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
+      nginx.ingress.kubernetes.io/ssl-passthrough: 'true'
+    host: velmios-minio-stg.velmios.dev
+    tls:
+      - secretName: velmios-minio-stg-tls
+        hosts:
+          - velmios-minio-stg.velmios.dev
+  console:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: cloudflare-velmios-dev
+      nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+      nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
+      nginx.ingress.kubernetes.io/ssl-passthrough: 'true'
+    host: console-velmios-minio-stg.velmios.dev
+    tls:
+      - secretName: console-velmios-minio-stg-tls
+        hosts:
+          - console-velmios-minio-stg.velmios.dev

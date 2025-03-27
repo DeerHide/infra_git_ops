@@ -1,0 +1,6 @@
+operator:
+  env:
+    - name: OPERATOR_STS_ENABLED
+      value: "on"
+    - name: MINIO_CONSOLE_TLS_ENABLE
+      value: "on"

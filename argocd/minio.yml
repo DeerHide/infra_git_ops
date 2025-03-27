@@ -9,25 +9,25 @@ spec:
     - repoURL: https://github.com/DeerHide/infra_git_ops.git
       path: argocd/minio/manifest
       targetRevision: HEAD
-    # - repoURL: https://operator.min.io
-    #   chart: tenant
-    #   targetRevision: 7.*
-    #   helm:
-    #     releaseName: minio-tenant
-    #     namespace: minio
-    #     valueFiles:
-    #       - $values/argocd/minio/values.yaml
-    # - repoURL: https://operator.min.io
-    #   chart: minio-operator
-    #   targetRevision: 4.*
-    #   helm:
-    #     releaseName: minio-operator
-    #     namespace: minio
-    #     valueFiles:
-    #       - $values/argocd/minio/values.yaml
-    # - repoURL: https://github.com/DeerHide/infra_git_ops.git
-    #   targetRevision: HEAD
-    #   ref: values
+    - repoURL: https://operator.min.io
+      chart: operator
+      targetRevision: 7.*
+      helm:
+        releaseName: minio-operator
+        namespace: minio
+        valueFiles:
+          - $values/argocd/minio/values-minio-operator.yml
+    - repoURL: https://operator.min.io
+      chart: tenant
+      targetRevision: 7.*
+      helm:
+        releaseName: minio-operator
+        namespace: minio
+        valueFiles:
+          - $values/argocd/minio/values-minio-tenant.yml
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      targetRevision: HEAD
+      ref: values
   destination:
     server: "https://kubernetes.default.svc"
     namespace: minio
