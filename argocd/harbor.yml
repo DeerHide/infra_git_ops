@@ -32,6 +32,7 @@ spec:
       jsonPointers:
         - /spec/template/metadata/annotations/checksum/secret
         - /spec/template/metadata/annotations/checksum/secret-core
+        - /spec/template/metadata/annotations/checksum/secret-jobservice
   syncPolicy:
     automated:
       selfHeal: true
