@@ -50,7 +50,7 @@ data:
           audTag:
             - e7675610a4d2e771e77bb9fb3911c9e5874d76cb2f60abcb861dd03c49a20b21
     - hostname: headlamp-stg.velmios.dev
-      service: https://headlamp.headlamp.svc.cluster.local:80
+      service: http://headlamp.headlamp.svc.cluster.local:80
       originRequest:
         noTLSVerify: true
         access:
