@@ -40,13 +40,14 @@ data:
           teamName: velmios
           audTag:
             - 347e18d69aeed946b08df952ce988d4169fcc260f67ec86b4d404fd01c9de702
-    # The first rule proxies traffic to the httpbin sample Service defined in app.yaml
-    # - hostname: tunnel.example.com
-    #   service: http://web-service:80
-    # This rule sends traffic to the built-in hello-world HTTP server. This can help debug connectivity
-    # issues. If hello.example.com resolves and tunnel.example.com does not, then the problem is
-    # in the connection from cloudflared to your local service, not from the internet to cloudflared.
-    # - hostname: hello.example.com
-    #   service: hello_world
+    - hostname: argocd-stg.velmios.dev
+      service: https://argocd-server.argocd.svc.cluster.local:443
+      originRequest:
+        noTLSVerify: true
+        access:
+          required: true
+          teamName: velmios
+          audTag:
+            - e7675610a4d2e771e77bb9fb3911c9e5874d76cb2f60abcb861dd03c49a20b21
     # This rule matches any traffic which didn't match a previous rule, and responds with HTTP 404.
     - service: http_status:404
