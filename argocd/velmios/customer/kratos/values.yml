@@ -134,6 +134,18 @@ kratos:
           enabled: true
           login_hints: false
           ui_url: https://portal-stg.velmios.dev/auth/signup
+          after:
+            default_browser_return_url: https://portal-stg.velmios.dev
+            password:
+              hooks:
+                - hook: web_hook
+                  config:
+                    url: "http://customer-backend.velmios.svc.cluster.local/api/v1/hooks/kratos/after-registration"
+                    method: "POST"
+                    body: base64://ZnVuY3Rpb24oY3R4KXtjdHg6IGN0eH0K
+                    response:
+                      ignore: false
+                      parse: true
         verification:
           enabled: true
           ui_url: https://portal-stg.velmios.dev/auth/verify
@@ -171,6 +183,11 @@ kratos:
                 "type": "string",
                 "title": "Country",
                 "minLength": 2
+              },
+              "realm_id": {
+                "type": "string",
+                "title": "Realm ID",
+                "minLength": 1
               },
               "email": {
                 "type": "string",
