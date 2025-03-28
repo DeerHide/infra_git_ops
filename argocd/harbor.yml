@@ -27,7 +27,3 @@ spec:
       kind: Ingress
       jsonPointers:
         - /spec/ingressClassName
-  syncPolicy:
-    automated:
-      selfHeal: true
-      prune: true    
