@@ -1,0 +1,47 @@
+grafana:
+  enabled: false
+
+prometheusOperator:
+  admissionWebhooks:
+    certManager:
+      enabled: true
+
+prometheus:
+
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: openebs-single-replica
+          resources:
+            requests:
+              storage: 20Gi
+
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: openebs-single-replica
+          resources:
+            requests:
+              storage: 20Gi
+
+
+  thanosRulerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: openebs-single-replica
+          resources:
+            requests:
+              storage: 20Gi
+
+    objectStorageConfig:
+      secret:
+        type: S3
+        config:
+          bucket: stg-kube-prometheus
+          endpoint: https://minio.minio.svc.cluster.local:9000
+          region: us-east-1
+          access_key: JOWA49gAp856HXeCnXqV
+          secret_key: mwQcqqQucWHfw1rex0B7bS338vPyKb69ymQbTOFU
