@@ -58,5 +58,14 @@ data:
           teamName: velmios
           audTag:
             - 278bd3a265fea027b69ed37d7057e91e8116364446e57a037e2196173ef1f461
+    - hostname: grafana-stg.velmios.dev
+      service: http://grafana.monitoring-grafana.svc.cluster.local:80
+      originRequest:
+        noTLSVerify: true
+        access:
+          required: true
+          teamName: velmios
+          audTag:
+            - 00f98a43c1bcd4b9acaf216135f2e7b097eac1fc172cb31125885e46ee8756be
     # This rule matches any traffic which didn't match a previous rule, and responds with HTTP 404.
     - service: http_status:404
