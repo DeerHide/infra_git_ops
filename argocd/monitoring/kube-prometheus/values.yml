@@ -18,6 +18,8 @@ prometheus:
               storage: 20Gi
 
   prometheusSpec:
+    externalLabels:
+      cluster: sysunicorns-kube
     storageSpec:
       volumeClaimTemplate:
         spec:
