@@ -1,0 +1,111 @@
+alloy:
+  extraPorts:
+    - name: otlp-http
+      port: 4318
+      targetPort: 4318
+      protocol: TCP
+    - name: otlp-grpc
+      port: 4317
+      targetPort: 4317
+      protocol: TCP
+  configMap:
+    content: |-
+      // Write your Alloy config here:
+      logging {
+        level = "info"
+        format = "logfmt"
+      }
+
+      loki.write "default" {
+        endpoint {
+          url = "http://loki-gateway.monitoring-loki.svc.cluster.local:80/loki/api/v1/push"
+          headers = {
+            "X-Scope-OrgID" = "velmios",
+          }
+        }
+      }
+
+      discovery.kubernetes "pods" {
+        role = "pod"
+      }
+
+      loki.source.kubernetes "default" {
+        targets = discovery.kubernetes.pods.targets
+        forward_to = [loki.write.default.receiver]
+      }
+
+      loki.source.kubernetes_events "default" {
+        forward_to = [loki.write.default.receiver]
+      }
+
+      otelcol.exporter.otlp "default" {
+        client {
+          endpoint = "tempo-distributor.monitoring-tempo.svc.cluster.local:3100"
+          tls {
+            insecure = true
+            insecure_skip_verify = true
+          }
+        }
+      }
+
+      prometheus.remote_write "default" {
+        endpoint {
+          url = "http://prometheus-operated.monitoring-kube-prometheus.svc.cluster.local:9090/api/v1/write"
+        }
+      }
+
+      otelcol.exporter.prometheus "default" {
+        forward_to = [prometheus.remote_write.default.receiver]
+      }
+
+      otelcol.exporter.loki "default" {
+        forward_to = [loki.write.default.receiver]
+      }
+
+      otelcol.receiver.otlp "default" {
+        grpc {
+          endpoint = "0.0.0.0:4317"
+        }
+
+        http {
+          endpoint = "0.0.0.0:4318"
+        }
+
+        output {
+          metrics = [otelcol.exporter.prometheus.default.input]
+          logs    = [ otelcol.exporter.loki.default.input ]
+          traces  = [otelcol.exporter.otlp.default.input]
+        }
+      }
+
+
+clustering:
+  enabled: true
+  name: "sysunicorns-kube"
+
+mounts:
+  varlog: true
+
+ingress:
+  enabled: true
+  annotations:
+    cert-manager.io/cluster-issuer: cloudflare-velmios-dev
+  ingressClassName: "nginx"
+  hosts:
+    - alloy-stg.velmios.dev
+  tls:
+    - secretName: alloy-tls
+      hosts:
+        - alloy-stg.velmios.dev
+
+traces:
+  otlp:
+    http:
+      enabled: true
+      port: 4318
+    grpc:
+      enabled: true
+      port: 4317
+
+memberlist:
+  cluster_label: "sysunicorns-kube"
