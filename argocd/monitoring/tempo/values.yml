@@ -1,0 +1,24 @@
+
+tempo:
+  persistence:
+    enabled: true
+    size: 30Gi
+    storageClass: openebs-single-replica
+  persistentVolumeClaimRetentionPolicy:
+    enabled: true
+metricsGenerator:
+  enabled: true
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClass: openebs-single-replica
+  persistentVolumeClaimRetentionPolicy:
+    enabled: true
+
+queryFronted:
+  enabled: true
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: cloudflare-velmios-dev

@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tempo
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    # Manifest
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      path: argocd/monitoring/tempo
+      targetRevision: HEAD
+    # HelmChart
+    - repoURL: https://grafana.github.io/helm-charts
+      chart: tempo-distributed
+      targetRevision: "1.*"
+      helm:
+        releaseName: tempo
+        valueFiles:
+          - $values/argocd/monitoring/tempo/values.yml
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: monitoring-tempo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 2
+      backoff:
+        duration: 5s
+        maxDuration: 3m0s
+        factor: 2
+    syncOptions:
+      - CreateNamespace=true
