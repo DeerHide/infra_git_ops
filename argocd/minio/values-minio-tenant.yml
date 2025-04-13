@@ -12,6 +12,8 @@ tenant:
     existingSecret: true
     accessKey: null
     secretKey: null
+  certificate:
+    requestAutoCert: true
 ingress:
   api:
     enabled: true
