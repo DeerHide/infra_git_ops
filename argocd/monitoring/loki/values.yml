@@ -13,22 +13,6 @@ loki:
   querier:
     # Default is 4, if you have enough memory and CPU you can increase, reduce if OOMing
     max_concurrent: 4
-  storage_config:
-    aws:
-      region: us-east-1
-      bucketNames:
-        chunks: stg-loki-chunks
-        ruler: stg-loki-ruler
-        admin: stg-loki-admin
-      s3: s3://Btrf7giZabQY0lmmSnjr:FecJhHSmR43fNv7ZXHYalzY61Be0KB4nUDlyHLuY@minio.minio.svc.cluster.local
-      s3forcepathstyle: true
-      insecure: true
-      region: null
-      sse_encryption: false
-      access_key_id: Btrf7giZabQY0lmmSnjr
-      secret_access_key: FecJhHSmR43fNv7ZXHYalzY61Be0KB4nUDlyHLuY
-      http_config:
-        insecure_skip_verify : true
   pattern_ingester:
     enabled: true
   limits_config:
@@ -42,14 +26,14 @@ loki:
       admin: stg-loki-admin
     s3:
       region: null
-      s3: s3://Btrf7giZabQY0lmmSnjr:FecJhHSmR43fNv7ZXHYalzY61Be0KB4nUDlyHLuY@minio.minio.svc.cluster.local
-      insecure: true
-      s3forcepathstyle: true
+      s3: https://Btrf7giZabQY0lmmSnjr:FecJhHSmR43fNv7ZXHYalzY61Be0KB4nUDlyHLuY@minio.minio.svc.cluster.local
+      insecure: false
+      s3ForcePathStyle: true
       sse_encryption: false
-      access_key_id: Btrf7giZabQY0lmmSnjr
-      secret_access_key: FecJhHSmR43fNv7ZXHYalzY61Be0KB4nUDlyHLuY
+      accessKeyId: Btrf7giZabQY0lmmSnjr
+      secretAccessKey: FecJhHSmR43fNv7ZXHYalzY61Be0KB4nUDlyHLuY
       http_config:
-        insecure_skip_verify : true
+        insecure_skip_verify: true
 
 deploymentMode: Distributed
 
