@@ -8,9 +8,6 @@ spec:
   destination:
     server: "https://kubernetes.default.svc"
     namespace: velmios-customer
-  syncPolicy:
-    automated:
-      selfHeal: true
   sources:
     # PostgreSQL
     - repoURL: registry-1.docker.io/bitnamicharts
