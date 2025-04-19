@@ -18,19 +18,19 @@ persistence:
   enabled: true
   persistentVolumeClaim:
     registry:
-      storageClass: openebs-single-replica
+      storageClass: openebs-replica
       size: 10Gi
     jobservice:
       jobLog:
-        storageClass: openebs-single-replica
+        storageClass: openebs-replica
     database:
-      storageClass: openebs-single-replica
+      storageClass: openebs-replica
     redis:
-      storageClass: openebs-single-replica
+      storageClass: openebs-replica
     trivy:
-      storageClass: openebs-single-replica
+      storageClass: openebs-replica
     chartmuseum:
-      storageClass: openebs-single-replica
+      storageClass: openebs-replica
 
 externalURL: https://harbor.stg.velmios.dev
 
