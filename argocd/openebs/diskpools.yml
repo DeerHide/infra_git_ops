@@ -28,6 +28,15 @@ spec:
 apiVersion: "openebs.io/v1beta2"
 kind: DiskPool
 metadata:
+  name: c6100-s04-eth0-diskpool
+  namespace: openebs
+spec:
+  node: c6100-s04-eth0
+  disks: ["/dev/sdc"]
+---
+apiVersion: "openebs.io/v1beta2"
+kind: DiskPool
+metadata:
   name: r610-5bf035j-eth0-d1-diskpool
   namespace: openebs
 spec:
