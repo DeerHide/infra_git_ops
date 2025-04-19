@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openebs
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    # Manifest
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      path: argocd/openebs
+      targetRevision: HEAD
+    # HelmChart
+    - repoURL: https://openebs.github.io/openebs
+      chart: openebs
+      targetRevision: "4.*"
+      helm:
+        releaseName: openebs
+        valueFiles:
+          - $values/argocd/openebs/values.yml
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: openebs
+  syncPolicy:
+    automated:
+      selfHeal: true

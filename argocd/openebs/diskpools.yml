@@ -1,0 +1,53 @@
+apiVersion: "openebs.io/v1beta2"
+kind: DiskPool
+metadata:
+  name: c6100-s01-eth0-diskpool
+  namespace: openebs
+spec:
+  node: c6100-s01-eth0
+  disks: ["/dev/sda"]
+---
+apiVersion: "openebs.io/v1beta2"
+kind: DiskPool
+metadata:
+  name: c6100-s02-eth0-diskpool
+  namespace: openebs
+spec:
+  node: c6100-s02-eth0
+  disks: ["/dev/sda"]
+---
+apiVersion: "openebs.io/v1beta2"
+kind: DiskPool
+metadata:
+  name: c6100-s03-eth0-diskpool
+  namespace: openebs
+spec:
+  node: c6100-s03-eth0
+  disks: ["/dev/sda"]
+---
+apiVersion: "openebs.io/v1beta2"
+kind: DiskPool
+metadata:
+  name: r610-5bf035j-eth0-d1-diskpool
+  namespace: openebs
+spec:
+  node: r610-5bf035j-eth0
+  disks: ["/dev/sdf"]
+---
+apiVersion: "openebs.io/v1beta2"
+kind: DiskPool
+metadata:
+  name: r610-5bf035j-eth0-d2-diskpool
+  namespace: openebs
+spec:
+  node: r610-5bf035j-eth0
+  disks: ["/dev/sde"]
+---
+apiVersion: "openebs.io/v1beta2"
+kind: DiskPool
+metadata:
+  name: r610-5bf035j-eth0-d3-diskpool
+  namespace: openebs
+spec:
+  node: r610-5bf035j-eth0
+  disks: ["/dev/sdd"]
