@@ -11,8 +11,6 @@ tenant:
   configSecret:
     existingSecret: true
     name: velmios-env-configuration
-    accessKey: null
-    secretKey: null
   certificate:
     requestAutoCert: true
 ingress:
