@@ -41,7 +41,7 @@ metadata:
   namespace: openebs
 spec:
   node: r610-5bf035j-eth0
-  disks: ["/dev/sdf"]
+  disks: ["/dev/sdg"]
 ---
 apiVersion: "openebs.io/v1beta2"
 kind: DiskPool
@@ -50,7 +50,7 @@ metadata:
   namespace: openebs
 spec:
   node: r610-5bf035j-eth0
-  disks: ["/dev/sde"]
+  disks: ["/dev/sdh"]
 ---
 apiVersion: "openebs.io/v1beta2"
 kind: DiskPool
@@ -59,4 +59,4 @@ metadata:
   namespace: openebs
 spec:
   node: r610-5bf035j-eth0
-  disks: ["/dev/sdd"]
+  disks: ["/dev/sdi"]
