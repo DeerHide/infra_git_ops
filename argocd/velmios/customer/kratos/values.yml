@@ -46,7 +46,10 @@ cronjob:
           secretKeyRef:
             name: velmios-customer-kratos-postgresql-secret
             key: dsn
-   
+
+secret:
+  enabled: false
+
 kratos:
   automigration:
     enabled: true
