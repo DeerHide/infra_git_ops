@@ -20,7 +20,7 @@ spec:
         releaseName: velmios-internal-hydra-postgresql
         valuesObject:
           global:
-            defaultStorageClass: openebs-single-replica
+            defaultStorageClass: openebs-replica
             postgresql:
               auth:
                 enablePostgresUser: true
