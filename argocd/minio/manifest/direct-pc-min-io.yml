@@ -8,4 +8,4 @@ reclaimPolicy: Delete
 allowVolumeExpansion: true
 parameters:
   protocol: nvmf
-  repl: "1"
+  repl: "3"

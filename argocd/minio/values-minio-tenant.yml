@@ -10,6 +10,7 @@ tenant:
       storageClassName: directpv-min-io
   configSecret:
     existingSecret: true
+    name: velmios-env-configuration
     accessKey: null
     secretKey: null
   certificate:
