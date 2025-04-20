@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velmios-internal-common
+  namespace: argocd
+spec:
+  project: velmios
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: velmios-internal
+  syncPolicy:
+    automated:
+      selfHeal: true
+  sources:
+    # Manifest
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      path: argocd/velmios/internal/common
+      targetRevision: HEAD
