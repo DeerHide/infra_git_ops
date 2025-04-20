@@ -12,7 +12,7 @@ prometheus:
     storage:
       volumeClaimTemplate:
         spec:
-          storageClassName: openebs-single-replica
+          storageClassName: openebs-replica
           resources:
             requests:
               storage: 20Gi
@@ -23,7 +23,7 @@ prometheus:
     storageSpec:
       volumeClaimTemplate:
         spec:
-          storageClassName: openebs-single-replica
+          storageClassName: openebs-replica
           resources:
             requests:
               storage: 20Gi
@@ -33,7 +33,7 @@ prometheus:
     storage:
       volumeClaimTemplate:
         spec:
-          storageClassName: openebs-single-replica
+          storageClassName: openebs-replica
           resources:
             requests:
               storage: 20Gi

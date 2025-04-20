@@ -12,7 +12,7 @@ ingress:
 
 persistence:
   enabled: true
-  storageClassName: openebs-single-replica
+  storageClassName: openebs-replica
 
 admin:
   existingSecret: grafana-admin
