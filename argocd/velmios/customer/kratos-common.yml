@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: velmios-customer-kratos
+  name: velmios-customer-common
   namespace: argocd
 spec:
   project: velmios
@@ -9,15 +9,8 @@ spec:
     server: "https://kubernetes.default.svc"
     namespace: velmios-customer
   sources:
-    # Helm Chart
-    - repoURL: https://k8s.ory.sh/helm/charts
-      chart: kratos
-      targetRevision: 0.50.*
-      helm:
-        valueFiles:
-          - $values/argocd/velmios/customer/kratos/values.yml
-    # Values
+    # Manifest
     - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      path: argocd/velmios/customer/common
       targetRevision: HEAD
-      ref: values
 
