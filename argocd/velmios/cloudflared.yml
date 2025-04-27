@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velmios-cloudflared
+  namespace: argocd
+spec:
+  project: velmios
+  sources:
+    # Manifest
+    - repoURL: https://github.com/DeerHide/infra_git_ops.git
+      path: argocd/velmios/cloudflared
+      targetRevision: HEAD
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: velmios
