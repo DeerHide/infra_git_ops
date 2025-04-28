@@ -32,7 +32,7 @@ metadata:
   namespace: openebs
 spec:
   node: c6100-s04-eth0
-  disks: ["/dev/sdc"]
+  disks: ["/dev/sda"]
 ---
 apiVersion: "openebs.io/v1beta2"
 kind: DiskPool
