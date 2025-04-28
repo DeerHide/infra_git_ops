@@ -1,5 +1,5 @@
 global:
-  storageClass: "openebs-single-replica"
+  storageClass: "openebs-replica"
 
 ingress:
   enabled: true
